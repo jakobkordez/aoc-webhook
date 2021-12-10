@@ -1,0 +1,19 @@
+{
+    "name": "aoc-webhook",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "keywords": [],
+    "author": "Jakob Kordež",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.21.0",
+        "cron": "^1.8.2",
+        "discord.js": "^12.5.1",
+        "dotenv": "^10.0.0",
+        "text-table": "^0.2.0"
+    }
+}
