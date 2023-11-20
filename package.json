@@ -1,19 +1,26 @@
 {
-    "name": "aoc-webhook",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js"
-    },
-    "keywords": [],
-    "author": "Jakob Kordež",
-    "license": "ISC",
-    "dependencies": {
-        "axios": "^0.21.0",
-        "cron": "^1.8.2",
-        "discord.js": "^12.5.1",
-        "dotenv": "^10.0.0",
-        "text-table": "^0.2.0"
-    }
+  "name": "aoc-webhook",
+  "version": "3.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "watch": "tsc-watch --onSuccess \"node dist/index.js\""
+  },
+  "keywords": [],
+  "author": "Jakob Kordež",
+  "license": "ISC",
+  "dependencies": {
+    "cron": "^3.1.6",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.2",
+    "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.2.2"
+  }
 }

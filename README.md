@@ -2,14 +2,15 @@
 
 Originally by [Martin Hanzlowsky](https://github.com/marwuint)
 
+Updated by [Matic Babnik](https://github.com/MaticBabnik)
+
 ## Enviromental variables
 
 Supports `.env` files.
 
 ```
-WEBHOOK_ID=...
-WEBHOOK_TOKEN=...
-LEADERBOARD_URL=...
+WEBHOOK_URL=...
+LEADERBOARD_ID=...
 SESSION_ID=...
 ```
 
@@ -18,11 +19,14 @@ SESSION_ID=...
 ### Simple
 
 ```sh
-# One time installation
-npm install
+# Install dependencies
+yarn
+
+# Build
+yarn build
 
 # Start
-npm start
+yarn start
 ```
 
 ### Docker
