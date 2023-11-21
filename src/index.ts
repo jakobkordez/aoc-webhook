@@ -17,6 +17,11 @@ if (!webhookURL || !leaderboardID || !sessionId) {
 async function main() {
   const date = new Date();
 
+  if (date.getUTCMonth() !== 11 || date.getUTCDate() > 25) {
+    console.log("Not December");
+    return;
+  }
+
   const r = await getData(date, leaderboardID, sessionId);
 
   const buffer = await buildImage(date, r);

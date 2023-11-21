@@ -1,21 +1,21 @@
 import puppeteer from "puppeteer";
-import { ILeaderboard } from "./api";
+import { ILeaderboard, ILeaderboardUser } from "./api";
 import { readFileSync } from "fs";
 
 const medals = ["", "🥇", "🥈", "🥉"];
 
 const template = readFileSync("template.html").toString();
 
-function timestampToLocalTime(ts?: number) {
-  if (!ts) return "";
-  const time = new Date(ts * 1000);
-
-  const locale = process.env.LOCALE ?? "sl-SI";
-  return time.toLocaleTimeString(locale, {
-    timeZone: process.env.TZ ?? "Europe/Ljubljana",
-    hour: "numeric",
-    minute: "2-digit",
-  });
+function getStarTime(user: ILeaderboardUser, dayStart: Date, star: 1 | 2) {
+  const day = dayStart.getUTCDate();
+  const starTs = user.completion_day_level[day]?.[star]?.get_star_ts;
+  if (!starTs) return "";
+  const diff = starTs - dayStart.valueOf() / 1000;
+  const hours = Math.floor(diff / 3600);
+  if (hours > 24) return "> 24h";
+  const minutes = Math.floor((diff % 3600) / 60);
+  const seconds = Math.floor(diff % 60);
+  return `${pad(hours, 2)}:${pad(minutes, 2)}:${pad(seconds, 2)}`;
 }
 
 function mapRow(...args: any[]) {
@@ -28,6 +28,8 @@ function pad(n: number, digits: number): string {
 
 function buildHTML(date: Date, leaderboard: ILeaderboard) {
   const day = date.getUTCDate();
+  const startDate = new Date(date);
+  startDate.setUTCHours(5, 0, 0, 0);
 
   if (day > 25) return `<h1>Nekdo je pozabil ugasniti webhook</h1>`;
 
@@ -37,10 +39,11 @@ function buildHTML(date: Date, leaderboard: ILeaderboard) {
     .filter((a) => a.local_score > 0)
     .sort((a, b) => b.local_score - a.local_score);
 
-  const digits = (people.length - 1).toString().length;
+  if (people.length === 0) return `<h1>Leaderboard empty</h1>`;
 
   const solvedToday = people.filter((a) => a.completion_day_level[day]);
-  const sortedByFirst = solvedToday
+  // 1st, 2nd, 3rd places for 1st star
+  const firstStarMedals = solvedToday
     .sort(
       (a, b) =>
         a.completion_day_level[day][1]!.get_star_ts -
@@ -48,7 +51,8 @@ function buildHTML(date: Date, leaderboard: ILeaderboard) {
     )
     .slice(0, 3)
     .map((a) => a.id);
-  const sortedBySecond = solvedToday
+  // 1st, 2nd, 3rd places for 2nd star
+  const secondStarMedals = solvedToday
     .filter((a) => a.completion_day_level[day][2])
     .sort(
       (a, b) =>
@@ -58,27 +62,24 @@ function buildHTML(date: Date, leaderboard: ILeaderboard) {
     .slice(0, 3)
     .map((a) => a.id);
 
-  const usersHtml = people
-    .map((u, i) => {
-      const firstMedal = medals[sortedByFirst.indexOf(u.id) + 1];
-      const secondMedal = medals[sortedBySecond.indexOf(u.id) + 1];
-      const firstStar = timestampToLocalTime(
-        u.completion_day_level[day]?.[1]?.get_star_ts
-      );
-      const secondStar = timestampToLocalTime(
-        u.completion_day_level[day]?.[2]?.get_star_ts
-      );
+  // Display only who solved today or top 5
+  const filteredPeople = people.filter(
+    (u, i) => i < 5 || u.completion_day_level[day]
+  );
+  const digits = (filteredPeople.length - 1).toString().length;
 
-      return mapRow(
-        pad(i, digits),
+  const usersHtml = filteredPeople
+    .map((u) =>
+      mapRow(
+        pad(people.indexOf(u), digits),
         u.name,
-        firstMedal,
-        firstStar,
-        secondMedal,
-        secondStar,
+        getStarTime(u, startDate, 1),
+        medals[firstStarMedals.indexOf(u.id) + 1],
+        getStarTime(u, startDate, 2),
+        medals[secondStarMedals.indexOf(u.id) + 1],
         u.local_score
-      );
-    })
+      )
+    )
     .join("");
 
   return t.replace("<!--players-->", usersHtml);

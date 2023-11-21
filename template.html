@@ -6,11 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Roboto+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         * {
-            font-family: "JetBrains Mono", monospace;
+            font-family: "Roboto Mono", 'Noto Color Emoji', monospace;
         }
 
         body {
@@ -36,27 +37,34 @@
             text-align: center;
         }
 
+        th:last-child {
+            text-align: right;
+        }
+
         td {
-            padding: 0.1rem;
-            text-align: center;
+            padding: 0.1rem 0.5rem;
+            text-align: right;
         }
 
         th:first-child,
         td:first-child {
-            text-align: left;
-            padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+            text-align: right;
         }
 
         th:nth-child(2),
         td:nth-child(2) {
             text-align: left;
-            padding: 0.2rem 0.5rem 0.2rem 0.2rem;
         }
 
-        th:last-child,
-        td:last-child {
-            text-align: right;
-            padding: 0.2rem 0.2rem 0.2rem 0.5rem;
+        td:nth-child(3),
+        td:nth-child(5) {
+            padding-right: 0;
+        }
+
+        td:nth-child(4),
+        td:nth-child(6) {
+            padding-left: 0;
+            text-shadow: none;
         }
 
         tr:nth-child(2) {
