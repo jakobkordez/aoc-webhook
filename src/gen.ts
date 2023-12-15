@@ -19,7 +19,9 @@ function getStarTime(user: ILeaderboardUser, dayStart: Date, star: 1 | 2) {
 }
 
 function mapRow(...args: any[]) {
-  return `<tr><td>${args.join("</td><td>")}</td></tr>`;
+  return `<tr class="p${parseInt(args[0])}"><td>${args.join(
+    "</td><td>"
+  )}</td></tr>`;
 }
 
 function pad(n: number, digits: number): string {
@@ -68,10 +70,12 @@ function buildHTML(date: Date, leaderboard: ILeaderboard) {
   );
   const digits = (filteredPeople.length - 1).toString().length;
 
+  const scores = people.map((u) => u.local_score);
+
   const usersHtml = filteredPeople
     .map((u) =>
       mapRow(
-        pad(people.indexOf(u), digits),
+        pad(scores.indexOf(u.local_score), digits),
         u.name,
         getStarTime(u, startDate, 1),
         medals[firstStarMedals.indexOf(u.id) + 1],
