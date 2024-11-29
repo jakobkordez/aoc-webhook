@@ -1,8 +1,12 @@
 # Advent of Code Discord Webhook
 
+Sends an image of an Advent of Code private leaderboard to a Discord server once a day.
+
 Originally by [Martin Hanzlowsky](https://github.com/marwuint)
 
 Updated by [Matic Babnik](https://github.com/MaticBabnik)
+
+<img src="docs/leaderboard.png"/>
 
 ## Enviromental variables
 
@@ -51,7 +55,7 @@ To run the bot on a specific date, set the `date` variable in `index.ts`.
 
 ```ts
 async function main() {
-    const date = new Date(2023, 11, 25);
+    const date = new Date(Date.UTC(2023, 11, 25));
     ...
 }
 ```
