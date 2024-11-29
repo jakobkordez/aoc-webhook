@@ -29,6 +29,12 @@ yarn build
 yarn start
 ```
 
+To override the CronJob and instantly send the leaderboard, use the `--now` flag.
+
+```sh
+yarn start --now
+```
+
 ### Docker
 
 ```sh
@@ -37,4 +43,15 @@ docker build -t aoc-webhook .
 
 # Run
 docker run -d --name aoc-webhook aoc-webhook
+```
+
+## Development / Debugging
+
+To run the bot on a specific date, set the `date` variable in `index.ts`.
+
+```ts
+async function main() {
+    const date = new Date(2023, 11, 25);
+    ...
+}
 ```
